@@ -1,54 +1,112 @@
 package online.reservation.model;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.util.Collection;
 
+@Entity
+@Table(name = "reservation")
 public class Reservation {
-    private String nomSalle;
-    private LocalDate date;
-    private int hour;
-    private Student student;
-    private Promotion promotion;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long reservation_id;
+
+    @Column(name = "reservationDate")
+    private String reservationDate;
+
+    @Column(name="hourOfReservation")
+    private String hourOfReservation;
+
+    @Column(name = "availableSeats")
+    private String availableSeats;
+
+    @Column(name = "date_id")
+    private int dateId;
+
+    @Column(name = "isReserved")
+    private boolean isReserved;
+
+    @Column(name = "isAccepted")
+    private boolean isAccepted;
+
+    @ManyToOne
+    private User user;
+
+
     // Constructors, Getters and Setters
+    public Reservation() {
+
+    }
 
 
-    public String getnomSalle() {
-        return nomSalle;
-    }
-    public Reservation(String nomSalle, LocalDate date, int hour, Student student, Promotion promotion) {
-        super();
-        this.nomSalle = nomSalle;
-        this.date = date;
-        this.hour = hour;
-        this.student = student;
-        this.promotion = promotion;
-    }
-    public void setnomSalle(String courtName) {
-        this.nomSalle = courtName;
+    public Reservation(Long reservation_id, String reservationDate, String hourOfReservation, String availableSeats, int dateId, boolean isReserved, boolean isAccepted, User user) {
+        this.reservation_id = reservation_id;
+        this.reservationDate = reservationDate;
+        this.hourOfReservation = hourOfReservation;
+        this.availableSeats = availableSeats;
+        this.dateId = dateId;
+        this.isReserved = isReserved;
+        this.isAccepted = isAccepted;
+        this.user = user;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-    public int getHour() {
-        return hour;
-    }
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-    public Student getStudent() {
-        return student;
-    }
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-    public Promotion getPromotion() {
-        return promotion;
-    }
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
+    public String getReservationDate() {
+        return reservationDate;
     }
 
-}
+    public void setReservationDate(String reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public String getHourOfReservation() {
+        return hourOfReservation;
+    }
+
+    public void setHourOfReservation(String hourOfReservation) {
+        this.hourOfReservation = hourOfReservation;
+    }
+
+    public String getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(String  availableSeats) {
+        this.availableSeats = availableSeats;
+    }
+
+    public int getDateId() {
+        return dateId;
+    }
+
+    public void setDateId(int dateId) {
+        this.dateId = dateId;
+    }
+
+    public boolean isReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        isReserved = reserved;
+    }
+
+    public boolean isAccepted() {
+        return isAccepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "reservationDate=" + reservationDate +
+                ", hourOfReservation=" + hourOfReservation +
+                ", availableSeats=" + availableSeats +
+                '}';
+    }
+
+
+
+    }
+

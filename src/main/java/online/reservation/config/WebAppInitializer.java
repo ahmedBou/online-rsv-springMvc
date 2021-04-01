@@ -1,6 +1,6 @@
 package online.reservation.config;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -15,29 +15,21 @@ import javax.servlet.ServletRegistration;
 // to handle all requests coming through the application (denoted by the mapping “/”).
 // The Spring Dispatcher Servlet takes an AnnotationConfigWebApplicationContext
 // which is responsible for Spring-related initializations using annotations.
-@Slf4j
+
 public class WebAppInitializer implements WebApplicationInitializer {
 
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext container) throws ServletException {
 
-        log.info("onStartup");
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(WebConfig.class);
 
-        // create the spring application context
-        AnnotationConfigWebApplicationContext context =
-                new AnnotationConfigWebApplicationContext();
-        context.register(WebConfig.class);
+        ctx.setServletContext(container);
 
-        // create the dispatcher servlet
-        DispatcherServlet dispatcherServlet =
-                new DispatcherServlet(context);
+        ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
 
-        // register and configure the dispatcher servlet
-        ServletRegistration.Dynamic registration =
-                servletContext.addServlet(DISPATCHER_SERVLET_NAME, dispatcherServlet);
-
-        registration.setLoadOnStartup(1);
-        registration.addMapping("/");
+        servlet.setLoadOnStartup(1);
+        servlet.addMapping("/");
     }
 }
